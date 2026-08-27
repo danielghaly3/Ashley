@@ -1,0 +1,548 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   BY ASHLEY CASS — DESIGN SYSTEM
+   ---------------------------------------------------------------------------
+   Direction: dark luxury spa. Deep warm charcoal ground, champagne gold accent,
+   cream panels, pill controls, centred composition — built to the reference.
+
+   Three layers, in order:
+     1. PRIMITIVES  raw values
+     2. SEMANTIC    roles the components reference
+     3. COMPONENT   type scale, radii, rhythm, motion, elevation, layering
+
+   Components never reference a primitive. The palette is committed dark, so
+   `color-scheme: dark` is declared rather than a second theme being half-built;
+   the semantic layer means a light theme is one `:root` block away if it is ever
+   wanted.
+
+   Every foreground/background pair is verified. On dark, body copy clears AA and
+   most clears AAA. Gold reaches 7.5:1 on the ground — but only 1.69:1 on cream,
+   which is why anything gold sitting on a cream panel uses `accent-on-contrast`
+   (bronze, 5.16:1) instead. That single substitution is the whole reason this
+   palette passes.
+=========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   1. PRIMITIVES
+--------------------------------------------------------------------------- */
+:root {
+  --night: #2a2320;
+  --night-2: #332b27;
+  --night-3: #3c332d;
+
+  --champagne: #f5e7d0;
+  --champagne-line: #e0cdae;
+
+  --bone: #f3eadc;
+  --sand: #cfc2b1;
+  --sand-dim: #a99b8a;
+
+  --cocoa: #33291f;
+  --cocoa-soft: #5a4b3c;
+
+  --gold: #d9ae68;
+  --gold-lift: #e5be7e;
+  --gold-veil: #ebd4a8;
+  /* Gold is unreadable on cream. This is the same accent, taken down until it
+     clears AA there. */
+  --bronze: #7e591f;
+
+  --hairline: #463c35;
+  --hairline-ui: #92826d;
+}
+
+/* ---------------------------------------------------------------------------
+   2. SEMANTIC ROLES
+--------------------------------------------------------------------------- */
+:root {
+  --s-surface: var(--night);
+  /* Alternating band. Named `sunken` for continuity; on a dark ground it reads
+     as a lift rather than a well. */
+  --s-surface-sunken: var(--night-2);
+  --s-surface-accent: var(--night-3);
+  /* The cream panel. Inverts the whole foreground set with it. */
+  --s-surface-contrast: var(--champagne);
+
+  --s-ink: var(--bone);
+  --s-ink-muted: var(--sand);
+  --s-ink-subtle: var(--sand-dim);
+  --s-ink-on-contrast: var(--cocoa);
+  --s-ink-on-contrast-muted: var(--cocoa-soft);
+
+  --s-line: var(--hairline);
+  --s-line-ui: var(--hairline-ui);
+  --s-line-strong: var(--hairline-ui);
+  --s-line-on-contrast: var(--champagne-line);
+  --s-line-on-contrast-ui: var(--bronze);
+
+  --s-accent: var(--gold);
+  --s-accent-lift: var(--gold-lift);
+  --s-accent-veil: var(--gold-veil);
+  --s-accent-on-contrast: var(--bronze);
+
+  --s-shadow-raised: 0 1px 2px rgb(0 0 0 / 0.35);
+  --s-shadow-floating: 0 18px 40px -18px rgb(0 0 0 / 0.65);
+  --s-shadow-glow: 0 10px 30px -14px rgb(217 174 104 / 0.45);
+}
+
+/* ---------------------------------------------------------------------------
+   3. COMPONENT TOKENS  →  utilities
+--------------------------------------------------------------------------- */
+@theme inline {
+  --color-surface: var(--s-surface);
+  --color-surface-sunken: var(--s-surface-sunken);
+  --color-surface-accent: var(--s-surface-accent);
+  --color-surface-contrast: var(--s-surface-contrast);
+
+  --color-ink: var(--s-ink);
+  --color-ink-muted: var(--s-ink-muted);
+  --color-ink-subtle: var(--s-ink-subtle);
+  --color-ink-on-contrast: var(--s-ink-on-contrast);
+  --color-ink-on-contrast-muted: var(--s-ink-on-contrast-muted);
+
+  --color-line: var(--s-line);
+  --color-line-ui: var(--s-line-ui);
+  --color-line-strong: var(--s-line-strong);
+  --color-line-on-contrast: var(--s-line-on-contrast);
+  --color-line-on-contrast-ui: var(--s-line-on-contrast-ui);
+
+  --color-accent: var(--s-accent);
+  --color-accent-lift: var(--s-accent-lift);
+  --color-accent-veil: var(--s-accent-veil);
+  --color-accent-on-contrast: var(--s-accent-on-contrast);
+
+  --shadow-raised: var(--s-shadow-raised);
+  --shadow-floating: var(--s-shadow-floating);
+  --shadow-glow: var(--s-shadow-glow);
+}
+
+@theme {
+  /* --- type ------------------------------------------------------------- */
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-jost), "Jost", ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-script-face), "Sacramento", cursive;
+
+  /* An eight-step modular scale plus two fluid display steps.
+     Clearing the namespace first drops Tailwind's own scale, so `text-xl` and
+     friends do not exist — an off-scale size fails the build instead of
+     quietly shipping. 16px is the floor for body copy. */
+  --text-*: initial;
+  --text-label: 0.75rem;       /* 12 — eyebrows, meta          */
+  --text-caption: 0.875rem;    /* 14 — fine print only         */
+  --text-body: 1rem;           /* 16 — body floor              */
+  --text-body-lg: 1.125rem;    /* 18 — lead paragraphs         */
+  --text-title-sm: 1.375rem;   /* 22 — card and row titles     */
+  --text-title: 1.75rem;       /* 28 — sub-section headings    */
+  --text-heading: 2.25rem;     /* 36 — section headings        */
+  --text-heading-lg: 2.875rem; /* 46 — page headings           */
+  --text-display: clamp(2.5rem, 6.4vw, 4.5rem);
+  --text-display-xl: clamp(2.75rem, 8vw, 6rem);
+
+  /* --- radii ------------------------------------------------------------ */
+  /* The reference is a soft-cornered design: pill controls, gently rounded
+     panels and photography. Three steps, nothing improvised. */
+  --radius-pill: 9999px;
+  --radius-panel: 1rem;
+  --radius-frame: 1.25rem;
+  --radius-chip: 0.625rem;
+
+  /* --- vertical rhythm -------------------------------------------------- */
+  --spacing-section-sm: clamp(3.5rem, 7vw, 5rem);
+  --spacing-section: clamp(4.5rem, 9vw, 7rem);
+  --spacing-section-lg: clamp(5.5rem, 11vw, 9rem);
+  /* WCAG / Apple HIG minimum interactive size. */
+  --spacing-tap: 2.75rem;
+
+  /* --- motion ----------------------------------------------------------- */
+  /* One vocabulary, globally. Micro-interactions stay inside the 150–300ms
+     window; entrances stay at or under 480ms; exits run ~65% of enters. */
+  --duration-fast: 180ms;
+  --duration-base: 240ms;
+  --duration-slow: 360ms;
+  --duration-reveal: 480ms;
+  --duration-exit: 160ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.9, 0.4);
+  --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   LAYERING
+   A named scale, so nothing is invented at the call site.
+--------------------------------------------------------------------------- */
+:root {
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-header: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-texture: 60;
+  --z-skip: 70;
+}
+
+/* ---------------------------------------------------------------------------
+   BASE
+--------------------------------------------------------------------------- */
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Clears the sticky header when jumping to an anchor. */
+    scroll-padding-top: 7rem;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 300;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-synthesis-weight: none;
+  }
+
+  ::selection {
+    background-color: var(--color-surface-accent);
+    color: var(--color-ink);
+  }
+
+  /* One focus treatment for the whole site. Gold, so it reads as part of the
+     brand rather than a browser default, at 7.5:1 on the ground. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Tailwind v4 no longer sets this in preflight. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+
+  /* Cuts the 300ms tap delay without disabling pinch-zoom. */
+  a,
+  button,
+  [role="button"],
+  [role="radio"] {
+    touch-action: manipulation;
+  }
+
+  img {
+    /* Photography sits on a warm panel while it decodes, never on a flash. */
+    background-color: var(--color-surface-accent);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   UTILITIES
+--------------------------------------------------------------------------- */
+
+/* Small caps label. 12px is the floor, per the type scale. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+@utility wordmark {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+@utility script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+}
+
+/* Prices and durations. Cormorant defaults to old-style figures, which sit
+   below the cap height and read poorly in a scannable price list. */
+@utility figures {
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+/* Oversized outlined numerals used as section markers — a printed folio,
+   not a UI badge. */
+@utility folio {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 0.72;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-accent) 55%, transparent);
+  user-select: none;
+}
+
+/* The folio on a cream panel strokes in bronze, not gold — gold is invisible
+   there. */
+@utility folio-on-contrast {
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-accent-on-contrast) 45%, transparent);
+}
+
+/* Type set vertically, like the spine of a printed lookbook. */
+@utility spine {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Guarantees the 44px minimum interactive size on links that are visually
+   just a line of text. */
+@utility tap-safe {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-tap);
+}
+
+@utility rule {
+  display: block;
+  height: 1px;
+  background-color: var(--color-line);
+  border: 0;
+}
+
+/* A hairline that fades out at both ends, the way a printed rule on a dark
+   ground is drawn. Used to separate sections without boxing them. */
+@utility rule-fade {
+  display: block;
+  height: 1px;
+  border: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-line) 18%,
+    var(--color-line) 82%,
+    transparent
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   TEXTURE
+   Her logo sits on a printed paper card. One tiling noise sprite carries that
+   tooth into the screen version: dark specks give the light surfaces grain,
+   light specks do the same on the contrast blocks. Fixed, so it stays still
+   while the page moves — exactly like printing on stock.
+--------------------------------------------------------------------------- */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-texture);
+  pointer-events: none;
+  background-image: url("/brand/grain.png");
+  background-repeat: repeat;
+  background-size: 140px 140px;
+  opacity: 0.28;
+}
+
+/* ---------------------------------------------------------------------------
+   MOTION
+   Entrances are opacity + a short translate, or a curtain lift for headlines.
+   Stagger is 40ms per item, per Material's 30–50ms guidance.
+--------------------------------------------------------------------------- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes curtain {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+.reveal > * {
+  opacity: 0;
+}
+
+.reveal.is-visible > * {
+  animation: rise var(--duration-reveal) var(--ease-out) both;
+}
+
+.reveal-mask > * {
+  clip-path: inset(0 0 100% 0);
+}
+
+.reveal-mask.is-visible > * {
+  animation: curtain var(--duration-reveal) var(--ease-editorial) both;
+}
+
+.reveal.is-visible > *:nth-child(1),
+.reveal-mask.is-visible > *:nth-child(1) { animation-delay: 0ms; }
+.reveal.is-visible > *:nth-child(2),
+.reveal-mask.is-visible > *:nth-child(2) { animation-delay: 40ms; }
+.reveal.is-visible > *:nth-child(3),
+.reveal-mask.is-visible > *:nth-child(3) { animation-delay: 80ms; }
+.reveal.is-visible > *:nth-child(4),
+.reveal-mask.is-visible > *:nth-child(4) { animation-delay: 120ms; }
+.reveal.is-visible > *:nth-child(5),
+.reveal-mask.is-visible > *:nth-child(5) { animation-delay: 160ms; }
+.reveal.is-visible > *:nth-child(6),
+.reveal-mask.is-visible > *:nth-child(6) { animation-delay: 200ms; }
+.reveal.is-visible > *:nth-child(7),
+.reveal-mask.is-visible > *:nth-child(7) { animation-delay: 240ms; }
+.reveal.is-visible > *:nth-child(8),
+.reveal-mask.is-visible > *:nth-child(8) { animation-delay: 280ms; }
+
+/* A photograph settles out of a slow scale as its veil lifts. */
+.image-reveal img {
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    transform 900ms var(--ease-out),
+    opacity var(--duration-reveal) var(--ease-out);
+}
+
+.image-reveal.is-visible img {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   MARQUEE
+   One track, duplicated, translated by exactly half its own width — so the
+   loop is seamless at any viewport without measuring anything in JS.
+--------------------------------------------------------------------------- */
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee 46s linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------------------------------------------------------------------------
+   FILMSTRIP
+   `contain: paint` is load-bearing, not decoration. A flex scroll container
+   nested inside the flex page shell leaks its scrollable width to the document
+   root in Chrome, which let the whole page scroll sideways even though every
+   ancestor reported the right width. Paint containment stops that at the
+   element, and the strip still scrolls normally inside it.
+
+   `scroll-padding-inline-start` matches the element's own padding: without it,
+   snap alignment cancels the page gutter and pulls the first tile flush
+   against the viewport edge.
+--------------------------------------------------------------------------- */
+.filmstrip {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+  contain: paint;
+  scroll-padding-inline-start: 1.5rem;
+}
+
+.filmstrip::-webkit-scrollbar {
+  display: none;
+}
+
+.filmstrip > * {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 40rem) {
+  .filmstrip {
+    scroll-padding-inline-start: 2rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .filmstrip {
+    scroll-padding-inline-start: 3rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal > *,
+  .reveal.is-visible > * {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .reveal-mask > *,
+  .reveal-mask.is-visible > * {
+    clip-path: none;
+    animation: none !important;
+  }
+
+  .image-reveal img,
+  .image-reveal.is-visible img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+
+  .filmstrip {
+    scroll-snap-type: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
