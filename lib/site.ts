@@ -1,17 +1,30 @@
 import { booking } from "@/data/business";
 
-export type NavItem = { label: string; href: string };
+export type NavItem = {
+  label: string;
+  /** In-page anchor. This is a single-page site; there are no other routes. */
+  href: string;
+  /** The element id the anchor targets, used for scroll-spy. */
+  id: string;
+};
 
-/** Primary navigation. `Book Now` is treated separately in the header. */
+/**
+ * Primary navigation. Every destination is a section of the one page, in the
+ * order it appears, so the scroll-spy indicator can simply track this list.
+ */
 export const navItems: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
-  { label: "About", href: "/about" },
-  { label: "Policies", href: "/policies" },
-  { label: "FAQ", href: "/faq" },
+  { label: "Home", href: "#top", id: "top" },
+  { label: "Services", href: "#services", id: "services" },
+  { label: "About", href: "#about", id: "about" },
+  { label: "Policies", href: "#policies", id: "policies" },
+  { label: "FAQ", href: "#faq", id: "faq" },
 ];
 
-export const bookNowItem: NavItem = { label: "Book Now", href: "/book" };
+export const bookNowItem: NavItem = {
+  label: "Book Now",
+  href: "#book",
+  id: "book",
+};
 
 /** Attributes for any link that leaves the site (Acuity, Instagram, maps). */
 export const externalLinkProps = {
@@ -20,19 +33,6 @@ export const externalLinkProps = {
 } as const;
 
 export const isExternal = (href: string) => /^https?:\/\//.test(href);
-
-/**
- * The label for the route currently being viewed. Used as a running head in the
- * compressed header on phones, where there is no room for the full nav.
- * Longest-match first, so `/services` does not lose to `/`.
- */
-export function currentNavLabel(pathname: string): string | null {
-  if (pathname === "/") return null;
-  const match = [...navItems, bookNowItem]
-    .filter((item) => item.href !== "/" && pathname.startsWith(item.href))
-    .sort((a, b) => b.href.length - a.href.length)[0];
-  return match?.label ?? null;
-}
 
 /** `180` → `3 hr`, `45` → `45 min`, `210` → `3 hr 30 min` */
 export function formatDuration(minutes: number): string {

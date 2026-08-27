@@ -12,7 +12,8 @@ import Wordmark from "./Wordmark";
 type NavOverlayProps = {
   open: boolean;
   onClose: () => void;
-  pathname: string;
+  /** The id of the section currently being read. */
+  activeId: string;
   /**
    * Where focus goes when the panel closes.
    *
@@ -36,7 +37,7 @@ type NavOverlayProps = {
 export default function NavOverlay({
   open,
   onClose,
-  pathname,
+  activeId,
   returnFocusTo,
 }: NavOverlayProps) {
   const reduceMotion = useReducedMotion();
@@ -154,16 +155,13 @@ export default function NavOverlay({
             >
               <ul className="flex flex-col">
                 {navItems.map((item, index) => {
-                  const active =
-                    item.href === "/"
-                      ? pathname === "/"
-                      : pathname.startsWith(item.href);
+                  const active = item.id === activeId;
                   return (
                     <li key={item.href} className="border-b border-line">
                       <Link
                         href={item.href}
                         onClick={onClose}
-                        aria-current={active ? "page" : undefined}
+                        aria-current={active ? "location" : undefined}
                         className="flex min-h-tap items-baseline justify-between py-5
                                    transition-colors duration-fast ease-out"
                       >

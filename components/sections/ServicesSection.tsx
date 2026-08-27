@@ -1,59 +1,21 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Container from "@/components/Container";
-import PageHero from "@/components/PageHero";
+import SectionIntro from "@/components/SectionIntro";
 import Reveal from "@/components/Reveal";
 import Action from "@/components/Action";
-import BookingCTA from "@/components/BookingCTA";
 import { addOns, booking, serviceCategories } from "@/data/business";
 import { formatDuration, formatPrice } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Lash Services",
-  description:
-    "Full sets, two-week refills, additions and Sunday squeeze-in appointments. Every set is mapped to your eye shape and natural lashes.",
-  alternates: { canonical: "/services" },
-};
-
-export default function ServicesPage() {
+export default function ServicesSection() {
   return (
-    <>
-      <PageHero
-        eyebrow="Services"
-        script="the menu"
-        title={
-          <>
-            Lash services,
-            <br /> mapped to you.
-          </>
-        }
-        intro={
-          <>
-            <p>
-              Each style below is a different finish, not a different standard of
-              work. The right one depends on your eye shape, how much fullness you
-              want to wear day to day, and how your natural lashes are doing.
-            </p>
-            <p>
-              Durations and prices are live from Ashley&apos;s booking system.
-              Choosing a service takes you straight to that appointment&apos;s
-              availability.
-            </p>
-          </>
-        }
+    <section id="services" aria-labelledby="services-heading" className="scroll-mt-28">
+      <SectionIntro
+        script="The menu"
+        title="Lash services, mapped to you"
+        id="services-heading"
       >
-        <Reveal className="flex flex-wrap items-center gap-x-8 gap-y-3">
-          {serviceCategories.map((category) => (
-            <a
-              key={category.slug}
-              href={`#${category.slug}`}
-              className="tap-safe eyebrow text-ink-subtle transition-colors duration-fast ease-out hover:text-ink active:text-ink"
-            >
-              {category.title}
-            </a>
-          ))}
-        </Reveal>
-      </PageHero>
+          Each style below is a different finish, not a different standard of work. The right one depends on your eye shape, how much fullness you want to wear day to day, and how your natural lashes are doing. Durations and prices are live from Ashley's booking system.
+        </SectionIntro>
 
       {serviceCategories.map((category, index) => {
         const imageLeft = index % 2 === 0;
@@ -61,11 +23,11 @@ export default function ServicesPage() {
         return (
           <section
             key={category.slug}
-            id={category.slug}
+            id={`svc-${category.slug}`}
             className={`scroll-mt-28 py-section ${
               index % 2 === 0 ? "bg-surface" : "bg-surface-sunken"
             }`}
-            aria-labelledby={`${category.slug}-heading`}
+            aria-labelledby={`svc-${category.slug}-heading`}
           >
             <Container size="wide">
               {/* An oversized outlined page number, like a printed folio. */}
@@ -106,12 +68,12 @@ export default function ServicesPage() {
                   } lg:row-start-1 lg:mt-0`}
                 >
                   <Reveal variant="mask">
-                    <h2
-                      id={`${category.slug}-heading`}
+                    <h3
+                      id={`svc-${category.slug}-heading`}
                       className="text-heading leading-[1.1] sm:text-heading-lg"
                     >
                       {category.title}
-                    </h2>
+                    </h3>
                     <p className="mt-6 max-w-xl text-body leading-[1.85] text-ink-muted">
                       {category.intro}
                     </p>
@@ -178,7 +140,7 @@ export default function ServicesPage() {
                     <Action href={booking.url} tone="primary">
                       Open the scheduler
                     </Action>
-                    <Action href="/policies" tone="text" showExternalIcon={false}>
+                    <Action href="#policies" tone="text" showExternalIcon={false}>
                       Read the policies first
                     </Action>
                   </Reveal>
@@ -195,13 +157,13 @@ export default function ServicesPage() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
             <Reveal className="lg:col-span-4">
               <p className="eyebrow text-ink-subtle">At checkout</p>
-              <h2
+              <h3
                 id="addons-heading"
                 className="mt-6 text-title leading-[1.15] sm:text-heading"
               >
                 Add-ons you can
                 <br /> attach to a booking.
-              </h2>
+              </h3>
             </Reveal>
 
             <div className="mt-10 lg:col-span-7 lg:col-start-6 lg:mt-0">
@@ -237,11 +199,6 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      <BookingCTA
-        script="Ready when you are"
-        title="Found your set?"
-        body="Every service above links straight into Ashley's booking system, where you can see live availability and secure your time with a deposit."
-      />
-    </>
+    </section>
   );
 }

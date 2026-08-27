@@ -189,11 +189,38 @@ returning on leave. Animated with `transform` only, and re-measured on resize an
 once `document.fonts.ready` resolves: the display face changes every label's
 width, and measuring before that lands leaves the rule permanently misaligned.
 
+## Single page
+
+Six routes merged into one document. Navigation is anchor-based with a scroll-spy
+indicator; the old paths redirect permanently to their sections.
+
+The spy deliberately does **not** use an IntersectionObserver threshold. With
+sections of wildly different heights — a four-card row against the full 41-service
+price menu — several are on screen at once and "most visible" flickers as you
+scroll. It picks the last section whose top has passed a reading line just below
+the header, which is how a person would answer the question, and pins the final
+section at the bottom of the page so a short closing section can still become
+active.
+
+Two things the merge broke, both caught by measurement rather than by eye:
+
+- **Heading levels.** Five former page `h1`s would have become five `h1`s on one
+  document. Every section body was demoted a level and `Accordion` gained a
+  `headingLevel` prop so policy and FAQ rows render at `h4`. Now 1 / 16 / 34 / 30
+  with zero skips.
+- **A stale `priority`.** `ashley-portrait` was the About *page's* hero image, so
+  it was preloaded. As a *section* it sits 14,000px down the page and was
+  competing with the real LCP image for bandwidth. One preload now, one eager
+  image.
+
+Weight: 453KB of HTML, **50KB gzipped** over the wire.
+
 ## Verification
 
 `/tmp` harness, run against the production build over CDP:
 
-- **18/18 pass** — 6 pages × 3 widths (375 / 768 / 1440), committed dark palette
+- **3/3 pass** — the single page at 375 / 768 / 1440, committed dark palette
+  (529–541 text nodes and 136–141 interactive elements checked per run)
 - Per run it checks: computed contrast of every rendered text node against its
   real resolved background (AA, with the large-text exception), body-size floor,
   every interactive element's box (with the WCAG 2.5.8 inline-link exemption),

@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowUpRight, CalendarCheck, Clock, CreditCard, MapPin } from "lucide-react";
 import Container from "@/components/Container";
-import PageHero from "@/components/PageHero";
+import SectionIntro from "@/components/SectionIntro";
 import Reveal from "@/components/Reveal";
 import Action from "@/components/Action";
 import { formatDuration, formatPrice } from "@/lib/site";
@@ -13,13 +12,6 @@ import {
   preparation,
   serviceCategories,
 } from "@/data/business";
-
-export const metadata: Metadata = {
-  title: "Book an Appointment",
-  description:
-    "Book a full set, a two-week refill or a Sunday squeeze-in with Ashley Cass in Wynwood, Miami, through her online booking system.",
-  alternates: { canonical: "/book" },
-};
 
 /* ---------------------------------------------------------------------------
    WHY THERE IS NO EMBEDDED SCHEDULER HERE
@@ -79,7 +71,7 @@ const goodToKnow = [
   },
 ] as const;
 
-export default function BookPage() {
+export default function BookSection() {
   const additions =
     serviceCategories.find((category) => category.slug === "additions")?.services ?? [];
 
@@ -91,28 +83,11 @@ export default function BookPage() {
     );
 
   return (
-    <>
-      <PageHero
-        eyebrow="Booking"
-        script="see you soon"
-        title={
-          <>
-            Ready for your
-            <br /> appointment?
-          </>
-        }
-        intro={
-          <>
-            <p>
-              Pick the appointment that matches where your lashes are right now.
-              Each option opens Ashley&apos;s live scheduler, where you&apos;ll choose
-              your style, your time, and secure it with a deposit.
-            </p>
-            <p className="text-body text-ink-subtle">
-              Scheduling is handled by {booking.provider} and opens in a new tab.
-            </p>
-          </>
-        }
+    <section id="book" aria-labelledby="book-heading" className="scroll-mt-28">
+      <SectionIntro
+        script="See you soon"
+        title="Ready for your appointment?"
+        id="book-heading"
       />
 
       {/* The two primary paths, each with its styles listed inline so a single
@@ -141,9 +116,9 @@ export default function BookPage() {
 
                   <Reveal className="mt-8">
                     <p className="eyebrow text-ink-subtle">{path.heading}</p>
-                    <h2 className="mt-5 text-title leading-tight sm:text-heading">
+                    <h3 className="mt-5 text-title leading-tight sm:text-heading">
                       {path.label}
-                    </h2>
+                    </h3>
                     <p className="mt-5 max-w-md text-body leading-[1.85] text-ink-muted">
                       {path.body}
                     </p>
@@ -191,7 +166,7 @@ export default function BookPage() {
 
                   <Reveal className="mt-7">
                     <Action
-                      href={`/services#${category.slug}`}
+                      href={`#svc-${category.slug}`}
                       tone="text"
                       showExternalIcon={false}
                     >
@@ -208,10 +183,10 @@ export default function BookPage() {
             <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
               <div className="lg:col-span-5">
                 <p className="eyebrow text-ink-subtle">Something else</p>
-                <h2 className="mt-5 text-title leading-[1.15] sm:text-heading">
+                <h3 className="mt-5 text-title leading-[1.15] sm:text-heading">
                   Additions, patch tests
                   <br /> and Sundays.
-                </h2>
+                </h3>
               </div>
 
               <div className="mt-8 lg:col-span-6 lg:col-start-7 lg:mt-0">
@@ -254,7 +229,7 @@ export default function BookPage() {
                   <Action href={booking.url} tone="secondary">
                     View all appointments
                   </Action>
-                  <Action href="/services" tone="text" showExternalIcon={false}>
+                  <Action href="#services" tone="text" showExternalIcon={false}>
                     See the full menu
                   </Action>
                 </div>
@@ -273,12 +248,12 @@ export default function BookPage() {
         <Container size="wide">
           <Reveal>
             <p className="eyebrow text-ink-subtle">Before you book</p>
-            <h2
+            <h3
               id="know-heading"
               className="mt-6 max-w-xl text-title leading-[1.12] sm:text-heading-lg"
             >
               Four things worth knowing.
-            </h2>
+            </h3>
           </Reveal>
 
           <ul className="mt-14 grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -289,7 +264,7 @@ export default function BookPage() {
                   strokeWidth={1}
                   className="size-6 text-ink-subtle"
                 />
-                <h3 className="mt-6 text-title-sm leading-snug">{item.title}</h3>
+                <h4 className="mt-6 text-title-sm leading-snug">{item.title}</h4>
                 <p className="mt-4 text-body leading-[1.75] text-ink-muted">
                   {item.body}
                 </p>
@@ -298,7 +273,7 @@ export default function BookPage() {
           </ul>
 
           <Reveal className="mt-14">
-            <Action href="/policies" tone="text" showExternalIcon={false}>
+            <Action href="#policies" tone="text" showExternalIcon={false}>
               Read all policies
             </Action>
           </Reveal>
@@ -311,12 +286,12 @@ export default function BookPage() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
             <Reveal className="lg:col-span-4">
               <p className="eyebrow text-ink-subtle">On the day</p>
-              <h2
+              <h3
                 id="prep-heading"
                 className="mt-6 text-title leading-[1.15] sm:text-heading"
               >
                 How to arrive.
-              </h2>
+              </h3>
             </Reveal>
 
             <div className="mt-8 lg:col-span-7 lg:col-start-6 lg:mt-0">
@@ -348,13 +323,13 @@ export default function BookPage() {
           <div className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-16">
             <Reveal className="lg:col-span-6">
               <p className="eyebrow text-ink-on-contrast-muted">Open the scheduler</p>
-              <h2
+              <h3
                 id="final-heading"
                 className="mt-6 text-heading leading-[1.08] sm:text-heading-lg"
               >
                 Live availability,
                 <br /> straight from Ashley.
-              </h2>
+              </h3>
               <p className="mt-7 max-w-md text-body leading-[1.85] text-ink-on-contrast">
                 {booking.provider} shows her real calendar, takes your deposit, and
                 emails your confirmation with the studio details.
@@ -421,6 +396,6 @@ export default function BookPage() {
           </div>
         </Container>
       </section>
-    </>
+    </section>
   );
 }

@@ -1,15 +1,18 @@
 import type { MetadataRoute } from "next";
 import { seo } from "@/data/business";
 
-const routes = ["", "/services", "/about", "/policies", "/faq", "/book"];
-
+/**
+ * One page, one URL. The section anchors are not separate entries — they are not
+ * separate documents, and listing them would invite search engines to treat
+ * fragments as pages.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-
-  return routes.map((route) => ({
-    url: `${seo.siteUrl}${route}`,
-    lastModified,
-    changeFrequency: route === "" ? "weekly" : "monthly",
-    priority: route === "" || route === "/book" ? 1 : 0.7,
-  }));
+  return [
+    {
+      url: seo.siteUrl,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+  ];
 }

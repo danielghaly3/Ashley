@@ -7,7 +7,8 @@ import type { NavItem } from "@/lib/site";
 
 type NavRailProps = {
   items: NavItem[];
-  pathname: string;
+  /** The id of the section currently being read. */
+  activeId: string;
   /** Tightens the row once the header has compressed. */
   compact: boolean;
 };
@@ -27,16 +28,14 @@ type Marker = { x: number; w: number } | null;
  * once the webfonts have loaded: the display face changes every label's width,
  * and measuring before that lands leaves the rule permanently misaligned.
  */
-export default function NavRail({ items, pathname, compact }: NavRailProps) {
+export default function NavRail({ items, activeId, compact }: NavRailProps) {
   const list = useRef<HTMLUListElement | null>(null);
   const links = useRef<Array<HTMLAnchorElement | null>>([]);
   const [marker, setMarker] = useState<Marker>(null);
   const [hovered, setHovered] = useState<number | null>(null);
   const reduceMotion = useReducedMotion();
 
-  const activeIndex = items.findIndex((item) =>
-    item.href === "/" ? pathname === "/" : pathname.startsWith(item.href),
-  );
+  const activeIndex = items.findIndex((item) => item.id === activeId);
 
   const measure = useCallback(
     (index: number) => {
@@ -55,7 +54,7 @@ export default function NavRail({ items, pathname, compact }: NavRailProps) {
 
   useEffect(() => {
     settle();
-  }, [settle, compact]);
+  }, [settle, compact, activeId]);
 
   useEffect(() => {
     const node = list.current;
@@ -85,7 +84,7 @@ export default function NavRail({ items, pathname, compact }: NavRailProps) {
                 links.current[index] = node;
               }}
               href={item.href}
-              aria-current={active ? "page" : undefined}
+              aria-current={active ? "location" : undefined}
               onMouseEnter={() => setHovered(index)}
               onFocus={() => setHovered(index)}
               onBlur={() => setHovered(null)}
@@ -99,8 +98,8 @@ export default function NavRail({ items, pathname, compact }: NavRailProps) {
         );
       })}
 
-      {/* The travelling rule. Decorative — `aria-current` already states the
-          location for assistive tech. */}
+      {/* The travelling rule. Decorative — `aria-current="location"` already
+          states where you are for assistive tech. */}
       <span
         aria-hidden="true"
         className={`pointer-events-none absolute bottom-1.5 left-0 h-px w-px origin-left bg-accent ${

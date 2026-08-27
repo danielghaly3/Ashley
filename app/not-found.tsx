@@ -17,7 +17,7 @@ export default function NotFound() {
             policies and booking are all a tap away.
           </p>
           <div className="mt-11 flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <Action href="/book" tone="primary">
+            <Action href="#book" tone="primary">
               Book an appointment
             </Action>
             <Action href="/" tone="secondary">

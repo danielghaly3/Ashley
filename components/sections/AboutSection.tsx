@@ -1,18 +1,9 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Container from "@/components/Container";
-import PageHero from "@/components/PageHero";
+import SectionIntro from "@/components/SectionIntro";
 import Reveal from "@/components/Reveal";
 import Action from "@/components/Action";
-import BookingCTA from "@/components/BookingCTA";
 import { business, contact } from "@/data/business";
-
-export const metadata: Metadata = {
-  title: "About Ashley",
-  description:
-    "Ashley Cass is a lash artist in Wynwood, Miami, creating custom lash sets designed around each client's eye shape, natural lashes and lifestyle.",
-  alternates: { canonical: "/about" },
-};
 
 /**
  * The philosophy points are written from what is verifiable: her own bio wording,
@@ -40,27 +31,13 @@ const principles = [
   },
 ];
 
-export default function AboutPage() {
+export default function AboutSection() {
   return (
-    <>
-      <PageHero
-        eyebrow="About"
+    <section id="about" aria-labelledby="about-heading" className="scroll-mt-28">
+      <SectionIntro
         script="by Ashley"
-        title={
-          <>
-            Beauty should
-            <br /> still feel like you.
-          </>
-        }
-        intro={
-          <>
-            <p>
-              {business.tagline}. A private, home-based lash studio in{" "}
-              {business.neighborhood}, built around one idea: your lashes should look
-              like the best version of your own, not like someone else&apos;s set.
-            </p>
-          </>
-        }
+        title="Beauty should still feel like you"
+        id="about-heading"
       />
 
       {/* Introduction. The portrait sits in a column rather than a full-width
@@ -76,7 +53,6 @@ export default function AboutPage() {
                     src="/images/ashley-portrait.jpg"
                     alt={`${business.artistName} in her lash studio in ${business.neighborhood}`}
                     fill
-                    priority
                     sizes="(min-width: 1024px) 40vw, 100vw"
                     className="object-cover object-[50%_20%]"
                   />
@@ -85,12 +61,12 @@ export default function AboutPage() {
 
               <Reveal className="mt-8">
                 <p className="eyebrow text-ink-subtle">The artist</p>
-                <h2
+                <h3
                   id="intro-heading"
                   className="mt-5 text-heading leading-[1.1] sm:text-heading-lg"
                 >
                   Hi, I&apos;m Ashley.
-                </h2>
+                </h3>
                 <p className="script mt-6 text-title text-accent sm:text-heading">
                   {business.tagline}
                 </p>
@@ -134,12 +110,12 @@ export default function AboutPage() {
         <Container size="wide">
           <Reveal>
             <p className="eyebrow text-ink-subtle">The approach</p>
-            <h2
+            <h3
               id="approach-heading"
               className="mt-6 max-w-2xl text-heading leading-[1.1] sm:text-heading-lg"
             >
               How an appointment actually goes.
-            </h2>
+            </h3>
           </Reveal>
 
           <div className="mt-14 lg:grid lg:grid-cols-12 lg:gap-x-16">
@@ -155,9 +131,9 @@ export default function AboutPage() {
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div>
-                      <h3 className="text-title-sm leading-snug sm:text-title-sm">
+                      <h4 className="text-title-sm leading-snug sm:text-title-sm">
                         {principle.title}
-                      </h3>
+                      </h4>
                       <p className="mt-4 max-w-lg text-body leading-[1.85] text-ink-muted">
                         {principle.body}
                       </p>
@@ -209,12 +185,12 @@ export default function AboutPage() {
             <div className="mt-12 lg:col-span-6 lg:col-start-7 lg:mt-0 lg:self-center">
               <Reveal>
                 <p className="eyebrow text-ink-subtle">The studio</p>
-                <h2
+                <h3
                   id="studio-heading"
                   className="mt-6 text-heading leading-[1.1] sm:text-heading-lg"
                 >
                   {business.neighborhood}.
-                </h2>
+                </h3>
               </Reveal>
 
               <Reveal className="mt-10">
@@ -282,10 +258,10 @@ export default function AboutPage() {
               </Reveal>
 
               <Reveal className="mt-11 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                <Action href="/book" tone="primary">
+                <Action href="#book" tone="primary">
                   Book an appointment
                 </Action>
-                <Action href="/policies" tone="secondary">
+                <Action href="#policies" tone="secondary">
                   Read the policies
                 </Action>
               </Reveal>
@@ -294,11 +270,6 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <BookingCTA
-        script="Come and see"
-        title="Come see for yourself."
-        body="Choose your appointment through Ashley's secure online booking system, and the studio details will follow by email."
-      />
-    </>
+    </section>
   );
 }

@@ -222,22 +222,29 @@ revealed content visible if JavaScript never runs.
 **Accessibility.** Semantic sectioning with labelled landmarks, a skip link, one
 consistent `:focus-visible` ring, `aria-expanded` / `aria-controls` on the accordion and
 the mobile menu, Escape to close, alt text on every image, and "(opens in a new tab)"
-announced on every outbound link.
+announced on every outbound link. On one page the heading hierarchy matters more, not
+less: a single `h1` in the hero, `h2` per section, and the accordions render at `h4`
+because they now sit two levels deep — verified as 1 / 16 / 34 / 30 with zero skipped
+levels. Navigation uses `aria-current="location"` (not `"page"`), which is what the
+attribute means when the target is a fragment of the current document.
 
 ---
 
 ## Structure
 
+**This is a single-page site.** Everything lives at `/` as anchored sections;
+navigation scrolls rather than routes. The paths the multi-page version exposed
+(`/services`, `/about`, `/policies`, `/faq`, `/book`) are kept as permanent
+redirects in `next.config.ts` so anything already shared lands on the right
+section instead of a 404.
+
 ```
 app/
   layout.tsx          shell, fonts, metadata, LocalBusiness JSON-LD
-  page.tsx            home
-  services/           full menu, per-service deep links
-  about/              the artist, the approach, the studio
-  policies/           the eight policies + preparation + model collab
-  faq/                grouped accordions + FAQPage JSON-LD
-  book/               the hand-off to Acuity
+  page.tsx            the whole site, in order
   not-found.tsx  sitemap.ts  robots.ts  globals.css
+components/sections/  ServicesSection, AboutSection, PoliciesSection,
+                      FaqSection, BookSection
 components/           Navbar, MobileMenu, ScrollProgress, Hero, Marquee, StyleFinder,
                       EditorialSection, ServicePreview, ImageCollage, Lookbook,
                       PersonalizedExperience, AboutPreview, Testimonials, Accordion,

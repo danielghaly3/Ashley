@@ -1,18 +1,9 @@
-import type { Metadata } from "next";
 import Container from "@/components/Container";
-import PageHero from "@/components/PageHero";
+import SectionIntro from "@/components/SectionIntro";
 import Reveal from "@/components/Reveal";
 import Accordion, { type AccordionItem } from "@/components/Accordion";
 import Action from "@/components/Action";
-import BookingCTA from "@/components/BookingCTA";
 import { modelCollab, policies, preparation } from "@/data/business";
-
-export const metadata: Metadata = {
-  title: "Policies",
-  description:
-    "Deposits and cancellations, late arrival, refills, foreign refills, payment, parking and appointment preparation for By Ashley Cass.",
-  alternates: { canonical: "/policies" },
-};
 
 /**
  * IMPORTANT
@@ -21,7 +12,7 @@ export const metadata: Metadata = {
  * Presentation is the only thing this page changes. If a policy needs updating,
  * update it in Acuity and in data/business.ts together so the two never drift.
  */
-export default function PoliciesPage() {
+export default function PoliciesSection() {
   const items: AccordionItem[] = policies.map((policy) => ({
     id: policy.id,
     index: policy.number,
@@ -39,27 +30,14 @@ export default function PoliciesPage() {
   }));
 
   return (
-    <>
-      <PageHero
-        eyebrow="Policies"
-        title={
-          <>
-            Everything worth
-            <br /> knowing first.
-          </>
-        }
-        intro={
-          <>
-            <p>
-              These are the same policies you&apos;ll agree to at checkout — set out
-              here so nothing arrives as a surprise once you&apos;re already booking.
-            </p>
-            <p>
-              Wording is unchanged from Ashley&apos;s booking agreement.
-            </p>
-          </>
-        }
-      />
+    <section id="policies" aria-labelledby="policies-heading" className="scroll-mt-28">
+      <SectionIntro
+        script="Good to know"
+        title="Everything worth knowing first"
+        id="policies-heading"
+      >
+          These are the same policies you'll agree to at checkout — set out here so nothing arrives as a surprise once you're already booking. Wording is unchanged from Ashley's booking agreement.
+        </SectionIntro>
 
       {/* The reminder — noticeable, but a hairline band rather than an alert box. */}
       <section className="pt-14 sm:pt-16" aria-label="Notice">
@@ -82,17 +60,17 @@ export default function PoliciesPage() {
         <Container size="wide">
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
             <Reveal className="lg:col-span-4">
-              <h2
+              <h3
                 id="policy-list-heading"
                 className="text-title leading-[1.15] sm:text-heading lg:sticky lg:top-32"
               >
                 <span className="block">The agreement,</span>
                 <span className="block text-accent">in eight parts.</span>
-              </h2>
+              </h3>
             </Reveal>
 
             <div className="mt-10 lg:col-span-7 lg:col-start-6 lg:mt-0">
-              <Accordion items={items} defaultOpen={[policies[0].id]} />
+              <Accordion items={items} defaultOpen={[policies[0].id]} headingLevel={4} />
             </div>
           </div>
         </Container>
@@ -107,13 +85,13 @@ export default function PoliciesPage() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
             <Reveal className="lg:col-span-4">
               <p className="eyebrow text-ink-subtle">Preparation</p>
-              <h2
+              <h3
                 id="preparation-heading"
                 className="mt-6 text-title leading-[1.15] sm:text-heading"
               >
                 Before you
                 <br /> come in.
-              </h2>
+              </h3>
               <p className="mt-7 max-w-sm text-body leading-[1.85] text-ink-muted">
                 Six small things that make the difference between a good set and a set
                 that lasts.
@@ -156,12 +134,12 @@ export default function PoliciesPage() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-16">
             <Reveal className="lg:col-span-4">
               <p className="eyebrow text-ink-subtle">Separate program</p>
-              <h2
+              <h3
                 id="model-heading"
                 className="mt-6 text-title leading-[1.15] sm:text-heading"
               >
                 {modelCollab.title}
-              </h2>
+              </h3>
               <p className="mt-7 max-w-sm text-body leading-[1.85] text-ink-muted">
                 {modelCollab.summary}
               </p>
@@ -182,7 +160,7 @@ export default function PoliciesPage() {
                 ))}
               </ul>
               <Reveal className="mt-9">
-                <Action href="/faq" tone="text" showExternalIcon={false}>
+                <Action href="#faq" tone="text" showExternalIcon={false}>
                   Still have a question?
                 </Action>
               </Reveal>
@@ -191,11 +169,6 @@ export default function PoliciesPage() {
         </Container>
       </section>
 
-      <BookingCTA
-        script="Understood?"
-        title="Then let's get you booked."
-        body="Booking confirms that you've read and agreed to the policies above — the same agreement appears at checkout."
-      />
-    </>
+    </section>
   );
 }

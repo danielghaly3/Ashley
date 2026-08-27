@@ -69,10 +69,10 @@ export default function Hero() {
               )}
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
-                <Action href="/book" tone="primary">
+                <Action href="#book" tone="primary">
                   Book your set
                 </Action>
-                <Action href="/services" tone="text" showExternalIcon={false}>
+                <Action href="#services" tone="text" showExternalIcon={false}>
                   Explore services
                 </Action>
               </div>

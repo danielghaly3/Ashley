@@ -81,7 +81,7 @@ export default function PillarCards() {
 
                   <div className="mt-auto pt-7">
                     <Action
-                      href={`/services#${card.slug}`}
+                      href={`#svc-${card.slug}`}
                       tone="textOnContrast"
                       showExternalIcon={false}
                       aria-label={`View ${card.title} services`}

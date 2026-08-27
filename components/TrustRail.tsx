@@ -84,7 +84,7 @@ export default function TrustRail() {
         </ul>
 
         <Reveal className="mt-12 flex flex-col items-center gap-8">
-          <Action href="/policies" tone="secondary">
+          <Action href="#policies" tone="secondary">
             Read the full policies
           </Action>
           <Flourish size="sm" />

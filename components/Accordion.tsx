@@ -20,6 +20,12 @@ type AccordionProps = {
   /** Allow several panels open at once. */
   multiple?: boolean;
   /**
+   * The heading level each row's trigger is wrapped in. On the single-page site
+   * the accordions sit two levels deep, so they render as h4 rather than h3 —
+   * a skipped level is a real navigation failure for screen-reader users.
+   */
+  headingLevel?: 3 | 4;
+  /**
    * Draws a rule under the last item. On, the list reads as a closed block —
    * right for the single policies list. Off, it ends open, which stops stacked
    * groups (the FAQ) from showing a double rule across the gap between them.
@@ -37,7 +43,9 @@ export default function Accordion({
   defaultOpen = [],
   multiple = true,
   closeRule = true,
+  headingLevel = 3,
 }: AccordionProps) {
+  const Heading = (headingLevel === 4 ? "h4" : "h3") as "h3" | "h4";
   const [open, setOpen] = useState<string[]>(defaultOpen);
   const reduceMotion = useReducedMotion();
   const uid = useId();
@@ -64,7 +72,7 @@ export default function Accordion({
               closeRule ? "" : "last:border-b-0"
             }`}
           >
-            <h3>
+            <Heading>
               <button
                 type="button"
                 id={buttonId}
@@ -95,7 +103,7 @@ export default function Accordion({
                   />
                 </span>
               </button>
-            </h3>
+            </Heading>
 
             <AnimatePresence initial={false}>
               {isOpen && (

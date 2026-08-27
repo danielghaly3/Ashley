@@ -1,18 +1,9 @@
-import type { Metadata } from "next";
 import Container from "@/components/Container";
-import PageHero from "@/components/PageHero";
+import SectionIntro from "@/components/SectionIntro";
 import Reveal from "@/components/Reveal";
 import Accordion, { type AccordionItem } from "@/components/Accordion";
 import Action from "@/components/Action";
-import BookingCTA from "@/components/BookingCTA";
 import { contact, faqs } from "@/data/business";
-
-export const metadata: Metadata = {
-  title: "FAQ",
-  description:
-    "Which lash set to book, how often to refill, foreign refills, what to do before your appointment, late arrivals, location and rescheduling.",
-  alternates: { canonical: "/faq" },
-};
 
 /** Groups preserve the order in which they first appear in data/business.ts. */
 function groupFaqs() {
@@ -36,36 +27,15 @@ const faqStructuredData = {
   })),
 };
 
-export default function FaqPage() {
+export default function FaqSection() {
   const groups = groupFaqs();
 
   return (
-    <>
-      <PageHero
-        eyebrow="Questions"
-        title={
-          <>
-            Answered before
-            <br /> you have to ask.
-          </>
-        }
-        intro={
-          <>
-            <p>
-              Everything below follows Ashley&apos;s booking policies. If something
-              here still isn&apos;t clear, message{" "}
-              <a
-                href={contact.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-ink underline decoration-line underline-offset-4 transition-colors duration-fast ease-out hover:text-ink-subtle"
-              >
-                {contact.instagramHandle}
-              </a>{" "}
-              before you book.
-            </p>
-          </>
-        }
+    <section id="faq" aria-labelledby="faq-heading" className="scroll-mt-28">
+      <SectionIntro
+        script="Questions"
+        title="Answered before you have to ask"
+        id="faq-heading"
       />
 
       <section className="py-section-sm" aria-label="Frequently asked questions">
@@ -90,13 +60,13 @@ export default function FaqPage() {
                     <p className="eyebrow text-ink-subtle" aria-hidden="true">
                       {String(groupIndex + 1).padStart(2, "0")}
                     </p>
-                    <h2 className="mt-5 text-title leading-[1.15] sm:text-heading lg:sticky lg:top-32">
+                    <h3 className="mt-5 text-title leading-[1.15] sm:text-heading lg:sticky lg:top-32">
                       {group}
-                    </h2>
+                    </h3>
                   </Reveal>
 
                   <div className="mt-8 lg:col-span-7 lg:col-start-6 lg:mt-0">
-                    <Accordion items={accordionItems} closeRule={false} />
+                    <Accordion items={accordionItems} closeRule={false} headingLevel={4} />
                   </div>
                 </div>
               </div>
@@ -108,24 +78,19 @@ export default function FaqPage() {
               The full agreement — deposits, cancellations, refill windows and the
               foreign refill conditions — is set out on the policies page.
             </p>
-            <Action href="/policies" tone="secondary">
+            <Action href="#policies" tone="secondary">
               Read the policies
             </Action>
           </Reveal>
         </Container>
       </section>
 
-      <BookingCTA
-        script="All clear"
-        title="Book your appointment."
-        body={`Live availability, secured with a deposit. Questions after booking? Message ${contact.instagramHandle}.`}
-      />
 
       <script
         type="application/ld+json"
         // Static, author-controlled JSON built from the FAQ data above.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
-    </>
+    </section>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CalendarPlus, Menu } from "lucide-react";
 import NavOverlay from "./NavOverlay";
+import { bookNowItem, navItems } from "@/lib/site";
+import { useActiveSection } from "@/lib/useActiveSection";
 
 /**
  * The phone-sized navigation.
@@ -21,11 +22,15 @@ import NavOverlay from "./NavOverlay";
  * home-indicator safe area.
  */
 export default function MobileActionBar() {
-  const pathname = usePathname();
+  const sectionIds = useMemo(
+    () => [...navItems, bookNowItem].map((item) => item.id),
+    [],
+  );
+  const activeId = useActiveSection(sectionIds);
   const [navOpen, setNavOpen] = useState(false);
   const closeNav = useCallback(() => setNavOpen(false), []);
   const menuButton = useRef<HTMLButtonElement | null>(null);
-  const onBookPage = pathname.startsWith("/book");
+  const atBooking = activeId === "book";
 
   return (
     <>
@@ -49,17 +54,18 @@ export default function MobileActionBar() {
             Menu
           </button>
 
-          {/* On /book itself the primary would only point at the page you are
-              already reading, so it steps down to a scroll-to-top of the list. */}
+          {/* Once the booking section is the one being read, the label stops
+              promising a jump and names what is already on screen. */}
           <Link
-            href={onBookPage ? "/book#appointments" : "/book"}
+            href="#book"
+            aria-current={atBooking ? "location" : undefined}
             className="flex min-h-tap flex-[1.35] items-center justify-center gap-2.5
                        rounded-pill bg-accent eyebrow text-surface
                        transition-[background-color,scale] duration-fast ease-out
                        active:scale-[0.975] active:bg-accent-lift"
           >
             <CalendarPlus aria-hidden="true" strokeWidth={1.25} className="size-4" />
-            {onBookPage ? "Choose a set" : "Book"}
+            {atBooking ? "Choose a set" : "Book"}
           </Link>
         </div>
       </div>
@@ -67,7 +73,7 @@ export default function MobileActionBar() {
       <NavOverlay
         open={navOpen}
         onClose={closeNav}
-        pathname={pathname}
+        activeId={activeId}
         returnFocusTo={menuButton}
       />
     </>

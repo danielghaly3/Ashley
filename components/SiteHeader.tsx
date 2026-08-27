@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { bookNowItem, currentNavLabel, navItems } from "@/lib/site";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { bookNowItem, navItems } from "@/lib/site";
+import { useActiveSection } from "@/lib/useActiveSection";
 import { business } from "@/data/business";
 import NavRail from "./NavRail";
 
@@ -34,7 +34,11 @@ import NavRail from "./NavRail";
  * action bar, in thumb reach.
  */
 export default function SiteHeader() {
-  const pathname = usePathname();
+  const sectionIds = useMemo(
+    () => [...navItems, bookNowItem].map((item) => item.id),
+    [],
+  );
+  const activeId = useActiveSection(sectionIds);
   const [compressed, setCompressed] = useState(false);
   const [retracted, setRetracted] = useState(false);
   const [promoted, setPromoted] = useState(false);
@@ -77,13 +81,11 @@ export default function SiteHeader() {
     };
   }, []);
 
-  // A route change resets the reading position, so reset the header with it.
-  useEffect(() => {
-    setRetracted(false);
-    lastY.current = 0;
-  }, [pathname]);
-
-  const runningHead = currentNavLabel(pathname);
+  const activeItem = [...navItems, bookNowItem].find(
+    (item) => item.id === activeId,
+  );
+  const runningHead =
+    activeItem && activeItem.id !== "top" ? activeItem.label : null;
 
   return (
     <header
@@ -160,11 +162,12 @@ export default function SiteHeader() {
         {/* ---- Navigation ------------------------------------------------- */}
         <div className="flex items-center gap-2">
           <nav aria-label="Primary" className="hidden lg:block">
-            <NavRail items={navItems} pathname={pathname} compact={compressed} />
+            <NavRail items={navItems} activeId={activeId} compact={compressed} />
           </nav>
 
           <Link
             href={bookNowItem.href}
+            aria-current={activeId === bookNowItem.id ? "location" : undefined}
             className={`hidden min-h-tap items-center eyebrow
                         rounded-pill transition-[background-color,color,border-color,padding,box-shadow,scale]
                         duration-fast ease-out active:scale-[0.975] lg:inline-flex ${
